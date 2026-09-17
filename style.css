@@ -512,7 +512,7 @@ p{ margin: 0 0 1em; color: var(--text-dim); }
 }
 .modal-overlay.open{ display:flex; }
 .modal{
-  width:100%; max-width:560px; max-height:88vh; overflow-y:auto;
+  width:100%; max-width:560px; max-height:88vh; overflow-y:auto; overflow-x:hidden;
   background: var(--surface); border:1px solid var(--border); border-radius: var(--radius-lg);
   padding:32px; position:relative; box-shadow: var(--shadow);
 }
@@ -583,7 +583,7 @@ p{ margin: 0 0 1em; color: var(--text-dim); }
 /* 18. Admin & login (intégrés en modales sur toutes les pages)          */
 /* -------------------------------------------------------------------- */
 .admin-shell{ display:grid; grid-template-columns: 1.1fr .9fr; gap:32px; align-items:start; }
-.admin-panel{ padding:0; }
+.admin-panel{ padding:0; min-width:0; }
 .admin-panel h2{ font-size:1.1rem; }
 .admin-list{ display:flex; flex-direction:column; gap:10px; max-height:420px; overflow:auto; }
 .admin-row{
