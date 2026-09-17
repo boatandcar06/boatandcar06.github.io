@@ -250,11 +250,11 @@
         <p>Cette annonce n'existe plus ou a été retirée.</p>
         <a class="btn btn--primary" href="offres.html">Voir toutes nos offres</a>
       </div>`;
-      document.title = "Véhicule introuvable — Boat & Car 06";
+      document.title = "Véhicule introuvable · Boat & Car 06";
       return;
     }
 
-    document.title = `${item.marque} ${item.modele} — Boat & Car 06`;
+    document.title = `${item.marque} ${item.modele} · Boat & Car 06`;
     const statusBadge = item.status === "reserve"
       ? `<span class="badge badge--reserved" style="position:static">Réservé</span>`
       : `<span class="badge badge--available" style="position:static">Disponible</span>`;
@@ -428,7 +428,7 @@
       const submitBtn = form.querySelector('[type="submit"]');
 
       const subject = data.vehicule
-        ? `Demande d'information — ${data.vehicule}`
+        ? `Demande d'information : ${data.vehicule}`
         : (data.sujet || `Nouveau message depuis le site ${SITE_CONFIG.companyName}`);
 
       const bodyLines = [

@@ -252,7 +252,7 @@
     form.querySelector('[name="featured"]').checked = !!item.featured;
     pendingImages = Array.isArray(item.images) ? [...item.images] : [];
     renderPhotoPreview();
-    formTitle.textContent = `Modifier — ${item.marque} ${item.modele}`;
+    formTitle.textContent = `Modifier ${item.marque} ${item.modele}`;
     submitBtn.textContent = "Enregistrer les modifications";
     cancelBtn.style.display = "inline-flex";
     form.scrollIntoView({ behavior: "smooth", block: "start" });
