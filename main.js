@@ -10,7 +10,7 @@
   /* ---------------------------------------------------------------- */
   /* Icônes véhicules (SVG vectoriel, pas de photo — voir README)      */
   /* ---------------------------------------------------------------- */
-  const ICON_COLOR = "#cfa441";
+  const ICON_COLOR = "#0091d0";
 
   const VEHICLE_ICONS = {
     voiture: `<svg viewBox="0 0 240 120" style="color:${ICON_COLOR}" xmlns="http://www.w3.org/2000/svg">
@@ -178,8 +178,10 @@
       if (emptyState) emptyState.style.display = items.length ? "none" : "block";
     }
 
-    // Init depuis l'URL (?type=voiture depuis la page d'accueil)
+    // Init depuis l'URL (?type=voiture&marque=BMW&budget=80000 depuis la recherche rapide)
     const urlType = qs("type");
+    const urlMarque = qs("marque");
+    const urlBudget = qs("budget");
     if (urlType) typeSelect.value = urlType;
 
     typeSelect.addEventListener("change", () => { refreshMarques(); applyFilters(); });
@@ -187,7 +189,43 @@
     searchInput.addEventListener("input", applyFilters);
 
     refreshMarques();
+    if (urlMarque) marqueSelect.value = urlMarque;
+    if (urlBudget) prixSelect.value = urlBudget;
     applyFilters();
+  }
+
+  /* ---------------------------------------------------------------- */
+  /* Recherche rapide (hero de la page d'accueil)                      */
+  /* ---------------------------------------------------------------- */
+  function initHeroSearch() {
+    const form = document.querySelector("[data-hero-search]");
+    if (!form) return;
+    const typeSelect = form.querySelector("#hero-type");
+    const marqueSelect = form.querySelector("#hero-marque");
+
+    function refreshMarques() {
+      const type = typeSelect.value;
+      const pool = type === "all" ? LISTINGS : LISTINGS.filter(l => l.type === type);
+      const marques = [...new Set(pool.map(l => l.marque))].sort();
+      marqueSelect.innerHTML = '<option value="all">Toutes les marques</option>' +
+        marques.map(m => `<option value="${m}">${m}</option>`).join("");
+    }
+
+    typeSelect.addEventListener("change", refreshMarques);
+    refreshMarques();
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const params = new URLSearchParams();
+      const type = typeSelect.value;
+      const marque = marqueSelect.value;
+      const budget = form.querySelector("#hero-budget").value;
+      if (type !== "all") params.set("type", type);
+      if (marque !== "all") params.set("marque", marque);
+      if (budget !== "all") params.set("budget", budget);
+      const qsString = params.toString();
+      window.location.href = "offres.html" + (qsString ? "?" + qsString : "");
+    });
   }
 
   /* ---------------------------------------------------------------- */
@@ -447,6 +485,7 @@
     initForms();
     initOffresPage();
     initDetailPage();
+    initHeroSearch();
   });
 
   // Expose quelques utilitaires pour la page admin

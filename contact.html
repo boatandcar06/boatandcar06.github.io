@@ -27,6 +27,9 @@
         <svg viewBox="0 0 24 24" width="16" height="16"><path d="M6 3h3l1.5 5-2 1.5a11 11 0 0 0 6 6l1.5-2 5 1.5v3a2 2 0 0 1-2 2C11.6 20 4 12.4 4 3c0-1.1.9-2 2-2z" stroke="currentColor" stroke-width="1.4" fill="none"/></svg>
         <strong data-cfg-phone>04 00 00 00 00</strong>
       </div>
+      <button class="icon-round-btn" data-account-toggle title="Connexion" aria-label="Connexion">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 20c0-3.3 3.6-6 8-6s8 2.7 8 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
       <a href="contact.html" class="btn btn--primary btn--sm">Nous contacter</a>
       <button class="nav-toggle" data-nav-toggle aria-label="Menu">
         <svg viewBox="0 0 24 24" width="20" height="20"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
@@ -136,11 +139,104 @@
   </div>
 </footer>
 
+<div class="modal-overlay" id="login-modal">
+  <div class="modal" style="max-width:420px;">
+    <button class="modal-close" data-modal-close aria-label="Fermer">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+    <h3>Connexion</h3>
+    <p class="modal-sub">Espace réservé à l'équipe Boat & Car 06.</p>
+    <form>
+      <div class="form-grid">
+        <div class="field field--full"><label>Identifiant</label><input type="text" name="username" required autocomplete="username"></div>
+        <div class="field field--full"><label>Mot de passe</label><input type="password" name="password" required autocomplete="current-password"></div>
+      </div>
+      <div class="form-error">Identifiant ou mot de passe incorrect.</div>
+      <button type="submit" class="btn btn--primary btn--block" style="margin-top:18px;">Se connecter</button>
+    </form>
+  </div>
+</div>
+
+<div class="modal-overlay" id="admin-modal">
+  <div class="modal modal--wide">
+    <button class="modal-close" data-modal-close aria-label="Fermer">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+    <div class="admin-topbar">
+      <div>
+        <h3 style="margin-bottom:2px;">Espace admin</h3>
+        <p class="modal-sub" style="margin-bottom:0;">Gestion des annonces</p>
+      </div>
+      <button type="button" class="btn btn--ghost btn--sm" data-admin-logout>Déconnexion</button>
+    </div>
+    <div class="admin-notice">
+      Le site est hébergé sur GitHub Pages (statique) : les changements ci-dessous doivent être copiés dans <strong>data-listings.js</strong>, puis publiés (commit + push) sur GitHub pour apparaître sur le site public.
+    </div>
+    <div class="admin-shell">
+      <div class="admin-panel">
+        <h2>Ajouter une annonce</h2>
+        <form data-admin-form style="margin-top:16px;">
+          <div class="form-grid">
+            <div class="field">
+              <label>Type</label>
+              <select name="type">
+                <option value="voiture">Voiture</option>
+                <option value="utilitaire">Camionnette / Utilitaire</option>
+                <option value="moto">Moto</option>
+                <option value="bateau">Bateau</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Marque</label>
+              <select name="marque"></select>
+            </div>
+            <div class="field"><label>Modèle</label><input type="text" name="modele" required placeholder="Ex : M3 Competition"></div>
+            <div class="field"><label>Année</label><input type="number" name="annee" required min="1980" max="2100" value="2024"></div>
+            <div class="field"><label>Prix (€)</label><input type="number" name="prix" required min="0" step="100"></div>
+            <div class="field"><label>Kilométrage / heures</label><input type="number" name="km" min="0" step="100"></div>
+            <div class="field">
+              <label>Carburant</label>
+              <select name="carburant"><option>Essence</option><option>Diesel</option><option>Hybride</option><option>Électrique</option><option>GPL</option><option>—</option></select>
+            </div>
+            <div class="field">
+              <label>Transmission</label>
+              <select name="transmission"><option>Manuelle</option><option>Automatique</option><option>—</option></select>
+            </div>
+            <div class="field"><label>Couleur</label><input type="text" name="couleur" placeholder="Ex : Bleu Isle of Man"></div>
+            <div class="field"><label>Puissance</label><input type="text" name="puissance" placeholder="Ex : 381 ch"></div>
+            <div class="field field--full"><label>Description</label><textarea name="description" placeholder="Court descriptif du véhicule"></textarea></div>
+            <div class="field field--full"><label>Points forts (séparés par des virgules)</label><input type="text" name="points_forts" placeholder="Garantie 12 mois, Carnet constructeur, ..."></div>
+            <div class="field field--full">
+              <label style="display:flex;align-items:center;gap:8px;flex-direction:row;text-transform:none;font-size:.9rem;color:var(--text);">
+                <input type="checkbox" name="featured" style="width:auto;"> Mettre en avant sur la page d'accueil
+              </label>
+            </div>
+          </div>
+          <button type="submit" class="btn btn--primary btn--block" style="margin-top:18px;">Ajouter l'annonce</button>
+        </form>
+      </div>
+      <div class="admin-panel">
+        <div class="flex items-center" style="justify-content:space-between;">
+          <h2>Annonces actuelles (<span data-admin-count>0</span>)</h2>
+          <button type="button" class="btn btn--outline btn--sm" data-admin-reset>Réinitialiser</button>
+        </div>
+        <div class="admin-list" data-admin-list style="margin-top:16px;"></div>
+        <h2 style="margin-top:28px;font-size:1rem;">Code à publier</h2>
+        <p class="field-hint" style="margin-bottom:12px;">Copiez ce code et remplacez le contenu du fichier <strong>data-listings.js</strong>, puis publiez sur GitHub.</p>
+        <pre class="code-block" data-admin-code></pre>
+        <button type="button" class="btn btn--primary" style="margin-top:12px;" data-admin-copy>Copier le code</button>
+        <p class="field-hint" data-copy-feedback style="display:none;margin-top:10px;"></p>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script src="data-config.js"></script>
 <script src="data-brands.js"></script>
 <script src="data-listings.js"></script>
 <script src="data-sales.js"></script>
 <script src="data-reviews.js"></script>
 <script src="main.js"></script>
+<script src="admin.js"></script>
 </body>
 </html>

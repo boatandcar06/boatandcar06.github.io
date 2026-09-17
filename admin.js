@@ -1,39 +1,132 @@
 /**
  * ==========================================================================
- * ADMIN — Gestion des annonces (page hors navigation publique)
+ * ESPACE ADMIN — Connexion + gestion des annonces (intégré à chaque page)
  * ==========================================================================
- * Le site n'ayant pas de serveur/base de données (hébergement GitHub Pages),
- * cette page travaille sur une copie locale des annonces (localStorage) et
- * génère le code prêt à coller dans data-listings.js pour publier vos
- * changements. Voir README.md pour la marche à suivre complète.
+ * Le site est hébergé sur GitHub Pages (statique, sans serveur). Cette
+ * "connexion" est donc un simple verrou côté navigateur : pratique pour
+ * réserver l'accès à l'outil de gestion, mais PAS une sécurité réelle
+ * (le code reste visible dans les fichiers du site). Pour une vraie
+ * authentification, il faudrait un service côté serveur.
+ *
+ * Identifiants par défaut : admin / bcar06 (à changer ci-dessous).
  * ==========================================================================
  */
 (function () {
   "use strict";
-  const STORAGE_KEY = "bc06_admin_listings_draft";
 
+  const ADMIN_USER = "admin";
+  const ADMIN_PASS = "bcar06";
+  const AUTH_KEY = "bc06_admin_session";
+  const DRAFT_KEY = "bc06_admin_listings_draft";
+
+  const accountBtn = document.querySelector("[data-account-toggle]");
+  const loginModal = document.querySelector("#login-modal");
+  const adminModal = document.querySelector("#admin-modal");
+  if (!accountBtn || !loginModal || !adminModal) return; // page sans le bloc admin
+
+  const loginForm = loginModal.querySelector("form");
+  const loginError = loginModal.querySelector(".form-error");
+
+  /* ---------------------------------------------------------------- */
+  /* État de connexion                                                 */
+  /* ---------------------------------------------------------------- */
+  function isLoggedIn() {
+    return sessionStorage.getItem(AUTH_KEY) === "1";
+  }
+  function setLoggedIn(v) {
+    if (v) sessionStorage.setItem(AUTH_KEY, "1");
+    else sessionStorage.removeItem(AUTH_KEY);
+    refreshAccountIcon();
+  }
+  function refreshAccountIcon() {
+    accountBtn.classList.toggle("is-active", isLoggedIn());
+    accountBtn.setAttribute("title", isLoggedIn() ? "Espace admin (connecté)" : "Connexion");
+    accountBtn.querySelector(".dot-badge")?.remove();
+    if (isLoggedIn()) {
+      const dot = document.createElement("span");
+      dot.className = "dot-badge";
+      accountBtn.appendChild(dot);
+    }
+  }
+
+  function openModal(el) { el.classList.add("open"); document.body.style.overflow = "hidden"; }
+  function closeModal(el) { el.classList.remove("open"); document.body.style.overflow = ""; }
+
+  accountBtn.addEventListener("click", () => {
+    if (isLoggedIn()) {
+      openModal(adminModal);
+      renderAdmin();
+    } else {
+      loginError.classList.remove("visible");
+      loginForm.reset();
+      openModal(loginModal);
+    }
+  });
+
+  document.querySelectorAll("[data-modal-close]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const overlay = btn.closest(".modal-overlay");
+      if (overlay) closeModal(overlay);
+    });
+  });
+  [loginModal, adminModal].forEach(overlay => {
+    overlay.addEventListener("click", (e) => { if (e.target === overlay) closeModal(overlay); });
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key !== "Escape") return;
+    if (loginModal.classList.contains("open")) closeModal(loginModal);
+    if (adminModal.classList.contains("open")) closeModal(adminModal);
+  });
+
+  loginForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const data = Object.fromEntries(new FormData(loginForm).entries());
+    if (data.username === ADMIN_USER && data.password === ADMIN_PASS) {
+      setLoggedIn(true);
+      closeModal(loginModal);
+      openModal(adminModal);
+      renderAdmin();
+    } else {
+      loginError.textContent = "Identifiant ou mot de passe incorrect.";
+      loginError.classList.add("visible");
+    }
+  });
+
+  const logoutBtn = adminModal.querySelector("[data-admin-logout]");
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", () => {
+      setLoggedIn(false);
+      closeModal(adminModal);
+    });
+  }
+
+  refreshAccountIcon();
+
+  /* ---------------------------------------------------------------- */
+  /* Gestion des annonces (identique à l'ancienne page admin.html)     */
+  /* ---------------------------------------------------------------- */
   function loadDraft() {
     try {
-      const raw = localStorage.getItem(STORAGE_KEY);
+      const raw = localStorage.getItem(DRAFT_KEY);
       if (raw) return JSON.parse(raw);
     } catch (e) { /* ignore */ }
     return JSON.parse(JSON.stringify(LISTINGS));
   }
   function saveDraft(draft) {
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(draft)); } catch (e) { /* ignore */ }
+    try { localStorage.setItem(DRAFT_KEY, JSON.stringify(draft)); } catch (e) { /* ignore */ }
   }
 
   let draft = loadDraft();
 
-  const listEl = document.querySelector("[data-admin-list]");
-  const countEl = document.querySelector("[data-admin-count]");
-  const codeEl = document.querySelector("[data-admin-code]");
-  const form = document.querySelector("[data-admin-form]");
+  const listEl = adminModal.querySelector("[data-admin-list]");
+  const countEl = adminModal.querySelector("[data-admin-count]");
+  const codeEl = adminModal.querySelector("[data-admin-code]");
+  const form = adminModal.querySelector("[data-admin-form]");
   const typeSelect = form.querySelector('[name="type"]');
   const marqueSelect = form.querySelector('[name="marque"]');
-  const resetBtn = document.querySelector("[data-admin-reset]");
-  const copyBtn = document.querySelector("[data-admin-copy]");
-  const copyFeedback = document.querySelector("[data-copy-feedback]");
+  const resetBtn = adminModal.querySelector("[data-admin-reset]");
+  const copyBtn = adminModal.querySelector("[data-admin-copy]");
+  const copyFeedback = adminModal.querySelector("[data-copy-feedback]");
 
   function refreshMarqueOptions() {
     const brands = BRANDS_BY_TYPE[typeSelect.value] || [];
@@ -46,7 +139,7 @@
       .replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
   }
 
-  function render() {
+  function renderAdmin() {
     countEl.textContent = draft.length + (draft.length > 1 ? " annonces" : " annonce");
     listEl.innerHTML = draft.map((item, idx) => `
       <div class="admin-row">
@@ -74,11 +167,11 @@
     const tg = e.target.closest("[data-toggle-status]");
     if (rm) {
       draft.splice(parseInt(rm.getAttribute("data-remove"), 10), 1);
-      render();
+      renderAdmin();
     } else if (tg) {
       const i = parseInt(tg.getAttribute("data-toggle-status"), 10);
       draft[i].status = draft[i].status === "reserve" ? "disponible" : "reserve";
-      render();
+      renderAdmin();
     }
   });
 
@@ -106,7 +199,7 @@
       status: "disponible"
     };
     draft.unshift(item);
-    render();
+    renderAdmin();
     form.reset();
     refreshMarqueOptions();
   });
@@ -114,7 +207,7 @@
   resetBtn.addEventListener("click", () => {
     if (!confirm("Réinitialiser la liste depuis data-listings.js ? Vos modifications locales seront perdues.")) return;
     draft = JSON.parse(JSON.stringify(LISTINGS));
-    render();
+    renderAdmin();
   });
 
   copyBtn.addEventListener("click", async () => {
@@ -129,5 +222,5 @@
   });
 
   refreshMarqueOptions();
-  render();
+  if (isLoggedIn()) renderAdmin();
 })();
