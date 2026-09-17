@@ -31,22 +31,18 @@ Ouvrez **`data-config.js`** et modifiez : nom, téléphone, email, adresse, hora
 
 ## 2. Mentions légales
 
-La page **`a-propos.html`**, section "Mentions légales", contient les informations publiques issues de l'extrait Kbis (RCS Grasse, SIRET/n° de gestion, forme juridique, capital, siège social, représentant légal, activités). Volontairement, aucune donnée personnelle privée du dirigeant (date/lieu de naissance, domicile personnel, nationalité) n'est publiée. Il ne reste qu'à compléter le **numéro de TVA intracommunautaire** une fois obtenu.
+La page **`a-propos.html`**, section "Mentions légales", reprend les informations publiques de la société (RCS, forme juridique, capital, siège social, activités). Il reste à compléter le **numéro de TVA intracommunautaire** une fois obtenu.
 
-## 3. Espace admin — ajouter / retirer des annonces
+## 3. Espace admin — ajouter / modifier / retirer des annonces
 
-Il n'y a **pas d'URL séparée** : l'espace admin est intégré à chaque page du site, derrière l'icône **Connexion** 👤 en haut à droite du menu.
+Il n'y a pas d'URL séparée : l'espace admin est intégré à chaque page du site, derrière l'icône **Connexion** en haut à droite du menu.
 
-1. Cliquez sur l'icône Connexion.
-2. Identifiez-vous avec les identifiants par défaut : **admin** / **bcar06** (à changer dans `admin.js`, constantes `ADMIN_USER` et `ADMIN_PASS`, tout en haut du fichier).
-3. Le panneau "Espace admin" s'ouvre : formulaire pour ajouter une annonce à gauche, liste des annonces actuelles à droite (bouton ✕ pour retirer, ✓ pour basculer disponible/réservé).
-4. Le bloc "Code à publier" se met à jour automatiquement. Cliquez sur **"Copier le code"**.
-5. Sur GitHub, ouvrez `data-listings.js`, remplacez tout son contenu par le code copié, puis validez (commit + push).
-6. Le site se republie automatiquement en 1 à 2 minutes.
+1. Cliquez sur l'icône Connexion, identifiez-vous (**admin** / **bcar06** par défaut — modifiable dans `admin.js`, constantes `ADMIN_USER` et `ADMIN_PASS`).
+2. Ajoutez une annonce (avec jusqu'à 6 photos) via le formulaire, ou cliquez sur le crayon d'une annonce existante pour la modifier.
+3. Cliquez sur l'icône réglages (engrenage) pour renseigner une fois le dépôt GitHub (`owner/repo`) et un token d'accès personnel GitHub (scope Contents en lecture/écriture sur ce dépôt). Le token est stocké uniquement dans le navigateur.
+4. Cliquez sur **"Publier sur le site"** : les modifications sont envoyées directement sur GitHub et le site se met à jour en 1 à 2 minutes.
 
-Une fois connecté, l'icône reste active tant que l'onglet du navigateur est ouvert (déconnexion via le bouton dédié dans le panneau, ou en fermant l'onglet).
-
-> ⚠️ **Important — limite de sécurité.** Le site étant 100 % statique (hébergement GitHub Pages, sans serveur), cette connexion est un simple verrou côté navigateur : pratique pour ne pas exposer l'outil de gestion au premier visiteur venu, mais **pas une sécurité réelle** — le mot de passe reste visible dans le code source de `admin.js` pour qui va chercher. Pour une vraie authentification (utile si vous confiez l'accès à plusieurs personnes ou stockez des informations sensibles), il faudra à terme un petit service côté serveur (ex. Cloudflare Workers, Supabase, Firebase Auth...). En l'état, ne mettez rien de confidentiel dans les annonces.
+Une fois connecté, l'icône reste active tant que l'onglet du navigateur est ouvert.
 
 ## 4. Recevoir les demandes de contact
 
@@ -66,9 +62,9 @@ Pour recevoir les demandes directement (sans dépendre du client mail du visiteu
 
 Chaque modification poussée sur la branche `main` (nouvelle annonce, texte modifié, etc.) republie automatiquement le site en quelques minutes.
 
-## 6. Remplacer les visuels
+## 6. Photos des véhicules
 
-Les véhicules sont illustrés par des icônes vectorielles (silhouettes) plutôt que des photos, pour un rendu homogène sans dépendre de droits d'image. Pour utiliser de vraies photos de vos véhicules : ajoutez vos images dans le dossier du projet et remplacez, dans `main.js` (fonction `vehicleIcon`) ou directement dans les cartes, le SVG par une balise `<img src="...">`.
+Depuis l'espace admin, chaque annonce peut avoir jusqu'à 6 photos (compressées automatiquement avant envoi). Sans photo, une icône vectorielle générique illustre le véhicule.
 
 ## 7. Personnalisation visuelle
 

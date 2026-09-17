@@ -116,7 +116,6 @@
     <div class="section-head">
       <div class="eyebrow">Informations légales</div>
       <h2>Mentions légales</h2>
-      <p>Conformément à la législation en vigueur (extrait Kbis du Greffe du Tribunal de Commerce de Grasse). Seules les informations publiques relatives à la société sont indiquées ici ; aucune donnée personnelle privée n'est publiée.</p>
     </div>
     <div class="legal-grid">
       <div><small>Dénomination sociale</small><strong>BOAT & CAR 06</strong></div>
@@ -124,18 +123,13 @@
       <div><small>Forme juridique</small><strong>Société par actions simplifiée (SAS) à associé unique</strong></div>
       <div><small>Capital social</small><strong>1 000,00 €</strong></div>
       <div><small>RCS</small><strong>988 860 276 R.C.S. Grasse</strong></div>
-      <div><small>N° de gestion</small><strong>2025B00758</strong></div>
       <div><small>Date d'immatriculation</small><strong>08/07/2025</strong></div>
-      <div><small>Greffe</small><strong>Tribunal de Commerce de Grasse</strong></div>
       <div><small>Siège social</small><strong data-cfg-address>2167 Route de la Baronne, 06510 Gattières</strong></div>
       <div><small>N° TVA intracommunautaire</small><strong>[À compléter]</strong></div>
-      <div><small>Représentant légal / Directeur de la publication</small><strong>Philippe Calandri, Président</strong></div>
-      <div><small>Hébergeur du site</small><strong>GitHub Pages — GitHub, Inc., 88 Colin P Kelly Jr St, San Francisco, CA 94107, USA</strong></div>
       <div><small>Activités principales</small><strong>Import-export et commerce de bateaux neufs ou d'occasion ; gardiennage et maintenance ; commerce de véhicules neufs ou d'occasion ; dépannage, remorquage et réparation automobile de véhicules légers</strong></div>
       <div><small>Email</small><strong data-cfg-email>contact@boatandcar06.fr</strong></div>
       <div><small>Téléphone</small><strong data-cfg-phone>04 00 00 00 00</strong></div>
     </div>
-    <p class="legal-note">Seules les informations à caractère public figurant sur l'extrait Kbis sont publiées ici (identité de la société, siège social, représentant légal ès qualités). Les données personnelles du dirigeant (date et lieu de naissance, domicile personnel, nationalité) ne sont volontairement pas publiées. Le numéro de TVA intracommunautaire n'ayant pas été fourni, il reste à compléter. Téléphone et email restent des exemples à personnaliser dans <code>data-config.js</code>.</p>
 
     <div style="margin-top:40px;">
       <h3 style="text-transform:none;font-size:1.1rem;">Protection des données</h3>
@@ -212,15 +206,26 @@
         <h3 style="margin-bottom:2px;">Espace admin</h3>
         <p class="modal-sub" style="margin-bottom:0;">Gestion des annonces</p>
       </div>
-      <button type="button" class="btn btn--ghost btn--sm" data-admin-logout>Déconnexion</button>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <button type="button" class="icon-btn" data-admin-settings-toggle title="Paramètres de publication">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" stroke="currentColor" stroke-width="1.6"/><path d="M19.4 13a7.4 7.4 0 0 0 0-2l2-1.5-2-3.4-2.3.9a7.4 7.4 0 0 0-1.7-1L15 3h-4l-.4 2a7.4 7.4 0 0 0-1.7 1l-2.3-.9-2 3.4L6.6 11a7.4 7.4 0 0 0 0 2l-2 1.5 2 3.4 2.3-.9a7.4 7.4 0 0 0 1.7 1L11 21h4l.4-2a7.4 7.4 0 0 0 1.7-1l2.3.9 2-3.4z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+        </button>
+        <button type="button" class="btn btn--ghost btn--sm" data-admin-logout>Déconnexion</button>
+      </div>
     </div>
-    <div class="admin-notice">
-      Le site est hébergé sur GitHub Pages (statique) : les changements ci-dessous doivent être copiés dans <strong>data-listings.js</strong>, puis publiés (commit + push) sur GitHub pour apparaître sur le site public.
+    <div class="admin-settings" data-admin-settings style="display:none;">
+      <div class="form-grid">
+        <div class="field field--full"><label>Dépôt GitHub (owner/repo)</label><input type="text" data-gh-repo placeholder="boatandcar06/boatandcar06.github.io"></div>
+        <div class="field field--full"><label>Token d'accès GitHub</label><input type="password" data-gh-token placeholder="ghp_..."></div>
+      </div>
+      <button type="button" class="btn btn--outline btn--sm" data-gh-save>Enregistrer</button>
+      <p class="field-hint" data-gh-save-feedback style="display:none;margin-top:8px;"></p>
     </div>
     <div class="admin-shell">
       <div class="admin-panel">
-        <h2>Ajouter une annonce</h2>
+        <h2 data-form-title>Ajouter une annonce</h2>
         <form data-admin-form style="margin-top:16px;">
+          <input type="hidden" name="editId" value="">
           <div class="form-grid">
             <div class="field">
               <label>Type</label>
@@ -252,12 +257,20 @@
             <div class="field field--full"><label>Description</label><textarea name="description" placeholder="Court descriptif du véhicule"></textarea></div>
             <div class="field field--full"><label>Points forts (séparés par des virgules)</label><input type="text" name="points_forts" placeholder="Garantie 12 mois, Carnet constructeur, ..."></div>
             <div class="field field--full">
+              <label>Photos (6 max)</label>
+              <input type="file" name="photos" accept="image/*" multiple>
+              <div class="admin-photo-preview" data-photo-preview></div>
+            </div>
+            <div class="field field--full">
               <label style="display:flex;align-items:center;gap:8px;flex-direction:row;text-transform:none;font-size:.9rem;color:var(--text);">
                 <input type="checkbox" name="featured" style="width:auto;"> Mettre en avant sur la page d'accueil
               </label>
             </div>
           </div>
-          <button type="submit" class="btn btn--primary btn--block" style="margin-top:18px;">Ajouter l'annonce</button>
+          <div style="display:flex;gap:10px;margin-top:18px;">
+            <button type="submit" class="btn btn--primary btn--block" data-form-submit>Ajouter l'annonce</button>
+            <button type="button" class="btn btn--outline" data-form-cancel style="display:none;">Annuler</button>
+          </div>
         </form>
       </div>
       <div class="admin-panel">
@@ -266,11 +279,8 @@
           <button type="button" class="btn btn--outline btn--sm" data-admin-reset>Réinitialiser</button>
         </div>
         <div class="admin-list" data-admin-list style="margin-top:16px;"></div>
-        <h2 style="margin-top:28px;font-size:1rem;">Code à publier</h2>
-        <p class="field-hint" style="margin-bottom:12px;">Copiez ce code et remplacez le contenu du fichier <strong>data-listings.js</strong>, puis publiez sur GitHub.</p>
-        <pre class="code-block" data-admin-code></pre>
-        <button type="button" class="btn btn--primary" style="margin-top:12px;" data-admin-copy>Copier le code</button>
-        <p class="field-hint" data-copy-feedback style="display:none;margin-top:10px;"></p>
+        <button type="button" class="btn btn--primary btn--block" style="margin-top:20px;" data-admin-publish>Publier sur le site</button>
+        <p class="field-hint" data-publish-feedback style="display:none;margin-top:10px;"></p>
       </div>
     </div>
   </div>

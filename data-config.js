@@ -16,7 +16,6 @@ const SITE_CONFIG = {
   phone: "+33 4 00 00 00 00",
   phoneDisplay: "04 00 00 00 00",
   email: "contact@boatandcar06.fr",
-  // Adresse du siège social (source : extrait Kbis, RCS Grasse)
   address: "2167 Route de la Baronne, 06510 Gattières, France",
 
   // Horaires

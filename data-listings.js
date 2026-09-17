@@ -2,13 +2,8 @@
  * ==========================================================================
  * ANNONCES — VÉHICULES DISPONIBLES
  * ==========================================================================
- * Ceci est la "base de données" du site (aucun serveur nécessaire).
- * Pour AJOUTER une annonce : copiez un bloc { ... } ci-dessous, modifiez
- * les valeurs, donnez-lui un "id" unique, et ajoutez-le au tableau.
- * Pour RETIRER une annonce : supprimez son bloc (ou passez status en
- * "vendu" pour la faire apparaître dans "Nos dernières ventes" à la place —
- * voir data-sales.js).
- * La page /admin.html génère ce code automatiquement pour vous.
+ * Ceci est la "base de données" du site. Elle se modifie depuis l'espace
+ * admin (icône Connexion, sur toutes les pages) et se publie en un clic.
  *
  * Champs :
  *  id          identifiant unique (texte, sans espace)
@@ -21,7 +16,7 @@
  *  points_forts liste de caractéristiques (chips)
  *  featured    true = mis en avant sur la page d'accueil
  *  status      "disponible" | "reserve"
- *  image       mot-clé libre (non utilisé pour une vraie photo, sert de repère)
+ *  images      tableau de photos (optionnel)
  * ==========================================================================
  */
 const LISTINGS = [

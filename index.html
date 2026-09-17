@@ -344,15 +344,26 @@
         <h3 style="margin-bottom:2px;">Espace admin</h3>
         <p class="modal-sub" style="margin-bottom:0;">Gestion des annonces</p>
       </div>
-      <button type="button" class="btn btn--ghost btn--sm" data-admin-logout>Déconnexion</button>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <button type="button" class="icon-btn" data-admin-settings-toggle title="Paramètres de publication">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" stroke="currentColor" stroke-width="1.6"/><path d="M19.4 13a7.4 7.4 0 0 0 0-2l2-1.5-2-3.4-2.3.9a7.4 7.4 0 0 0-1.7-1L15 3h-4l-.4 2a7.4 7.4 0 0 0-1.7 1l-2.3-.9-2 3.4L6.6 11a7.4 7.4 0 0 0 0 2l-2 1.5 2 3.4 2.3-.9a7.4 7.4 0 0 0 1.7 1L11 21h4l.4-2a7.4 7.4 0 0 0 1.7-1l2.3.9 2-3.4z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+        </button>
+        <button type="button" class="btn btn--ghost btn--sm" data-admin-logout>Déconnexion</button>
+      </div>
     </div>
-    <div class="admin-notice">
-      Le site est hébergé sur GitHub Pages (statique) : les changements ci-dessous doivent être copiés dans <strong>data-listings.js</strong>, puis publiés (commit + push) sur GitHub pour apparaître sur le site public.
+    <div class="admin-settings" data-admin-settings style="display:none;">
+      <div class="form-grid">
+        <div class="field field--full"><label>Dépôt GitHub (owner/repo)</label><input type="text" data-gh-repo placeholder="boatandcar06/boatandcar06.github.io"></div>
+        <div class="field field--full"><label>Token d'accès GitHub</label><input type="password" data-gh-token placeholder="ghp_..."></div>
+      </div>
+      <button type="button" class="btn btn--outline btn--sm" data-gh-save>Enregistrer</button>
+      <p class="field-hint" data-gh-save-feedback style="display:none;margin-top:8px;"></p>
     </div>
     <div class="admin-shell">
       <div class="admin-panel">
-        <h2>Ajouter une annonce</h2>
+        <h2 data-form-title>Ajouter une annonce</h2>
         <form data-admin-form style="margin-top:16px;">
+          <input type="hidden" name="editId" value="">
           <div class="form-grid">
             <div class="field">
               <label>Type</label>
@@ -384,12 +395,20 @@
             <div class="field field--full"><label>Description</label><textarea name="description" placeholder="Court descriptif du véhicule"></textarea></div>
             <div class="field field--full"><label>Points forts (séparés par des virgules)</label><input type="text" name="points_forts" placeholder="Garantie 12 mois, Carnet constructeur, ..."></div>
             <div class="field field--full">
+              <label>Photos (6 max)</label>
+              <input type="file" name="photos" accept="image/*" multiple>
+              <div class="admin-photo-preview" data-photo-preview></div>
+            </div>
+            <div class="field field--full">
               <label style="display:flex;align-items:center;gap:8px;flex-direction:row;text-transform:none;font-size:.9rem;color:var(--text);">
                 <input type="checkbox" name="featured" style="width:auto;"> Mettre en avant sur la page d'accueil
               </label>
             </div>
           </div>
-          <button type="submit" class="btn btn--primary btn--block" style="margin-top:18px;">Ajouter l'annonce</button>
+          <div style="display:flex;gap:10px;margin-top:18px;">
+            <button type="submit" class="btn btn--primary btn--block" data-form-submit>Ajouter l'annonce</button>
+            <button type="button" class="btn btn--outline" data-form-cancel style="display:none;">Annuler</button>
+          </div>
         </form>
       </div>
       <div class="admin-panel">
@@ -398,11 +417,8 @@
           <button type="button" class="btn btn--outline btn--sm" data-admin-reset>Réinitialiser</button>
         </div>
         <div class="admin-list" data-admin-list style="margin-top:16px;"></div>
-        <h2 style="margin-top:28px;font-size:1rem;">Code à publier</h2>
-        <p class="field-hint" style="margin-bottom:12px;">Copiez ce code et remplacez le contenu du fichier <strong>data-listings.js</strong>, puis publiez sur GitHub.</p>
-        <pre class="code-block" data-admin-code></pre>
-        <button type="button" class="btn btn--primary" style="margin-top:12px;" data-admin-copy>Copier le code</button>
-        <p class="field-hint" data-copy-feedback style="display:none;margin-top:10px;"></p>
+        <button type="button" class="btn btn--primary btn--block" style="margin-top:20px;" data-admin-publish>Publier sur le site</button>
+        <p class="field-hint" data-publish-feedback style="display:none;margin-top:10px;"></p>
       </div>
     </div>
   </div>

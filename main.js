@@ -49,6 +49,13 @@
     return VEHICLE_ICONS[type] || VEHICLE_ICONS.voiture;
   }
 
+  function mediaHTML(item) {
+    if (item.images && item.images.length) {
+      return `<img src="${item.images[0]}" alt="${item.marque} ${item.modele}">`;
+    }
+    return vehicleIcon(item.type);
+  }
+
   function typeLabel(type) {
     const found = (typeof VEHICLE_TYPES !== "undefined") ? VEHICLE_TYPES.find(t => t.id === type) : null;
     return found ? found.label.replace(/s$/, "") : type;
@@ -93,7 +100,7 @@
       <div class="listing-card__media">
         ${statusBadge}
         <span class="badge badge--type">${typeLabel(item.type)}</span>
-        ${vehicleIcon(item.type)}
+        ${mediaHTML(item)}
         <span class="stripe-bar"></span>
       </div>
       <div class="listing-card__body">
@@ -258,10 +265,14 @@
       </div>
       <div class="detail-grid">
         <div>
-          <div class="detail-media">
-            ${vehicleIcon(item.type)}
+          <div class="detail-media" data-detail-media>
+            ${mediaHTML(item)}
             <span class="stripe-bar"></span>
           </div>
+          ${item.images && item.images.length > 1 ? `
+          <div class="detail-thumbs">
+            ${item.images.map((src, i) => `<button type="button" class="${i === 0 ? "active" : ""}" data-thumb="${i}"><img src="${src}" alt=""></button>`).join("")}
+          </div>` : ""}
           <div class="detail-points">${statusBadge}<span class="badge badge--type" style="position:static">${typeLabel(item.type)}</span>${(item.points_forts||[]).map(p => `<span class="chip">${p}</span>`).join("")}</div>
           <h2 style="text-transform:none;font-size:1.5rem;margin-top:24px;">Description</h2>
           <p>${item.description}</p>
@@ -286,6 +297,19 @@
         </aside>
       </div>
     `;
+
+    if (item.images && item.images.length > 1) {
+      const mediaEl = root.querySelector("[data-detail-media]");
+      root.querySelectorAll("[data-thumb]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const i = parseInt(btn.getAttribute("data-thumb"), 10);
+          const img = mediaEl.querySelector("img");
+          if (img) img.src = item.images[i];
+          root.querySelectorAll("[data-thumb]").forEach(b => b.classList.remove("active"));
+          btn.classList.add("active");
+        });
+      });
+    }
   }
 
   /* ---------------------------------------------------------------- */
