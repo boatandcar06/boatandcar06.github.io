@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nos offres — Boat & Car 06</title>
+<meta name="description" content="Toutes les annonces disponibles chez Boat & Car 06 : voitures, utilitaires, motos et bateaux. Filtrez par type, marque et budget.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='5' fill='%230a0a0c'/%3E%3Cpath d='M4 16h16M4 10h10' stroke='%23cfa441' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="navbar">
+  <div class="container">
+    <a href="index.html" class="brand">
+      <span class="brand__mark"><svg viewBox="0 0 24 24" width="20" height="20" style="color:var(--gold-soft)"><path d="M4 12h16M4 6h10M4 18h7" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg></span>
+      <span class="brand__name">Boat & <span>Car 06</span></span>
+    </a>
+    <nav class="nav-links">
+      <a href="index.html">Accueil</a>
+      <a href="offres.html" class="active">Nos offres</a>
+      <a href="a-propos.html">À propos</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <div class="navbar__actions">
+      <div class="navbar__phone">
+        <svg viewBox="0 0 24 24" width="16" height="16"><path d="M6 3h3l1.5 5-2 1.5a11 11 0 0 0 6 6l1.5-2 5 1.5v3a2 2 0 0 1-2 2C11.6 20 4 12.4 4 3c0-1.1.9-2 2-2z" stroke="currentColor" stroke-width="1.4" fill="none"/></svg>
+        <strong data-cfg-phone>04 00 00 00 00</strong>
+      </div>
+      <a href="contact.html" class="btn btn--primary btn--sm">Nous contacter</a>
+      <button class="nav-toggle" data-nav-toggle aria-label="Menu">
+        <svg viewBox="0 0 24 24" width="20" height="20"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="mobile-nav" data-mobile-nav>
+    <a href="index.html">Accueil</a>
+    <a href="offres.html">Nos offres</a>
+    <a href="a-propos.html">À propos</a>
+    <a href="contact.html">Contact</a>
+    <a class="btn btn--primary btn--block" href="contact.html">Nous contacter</a>
+  </div>
+</header>
+
+<section class="section--tight" style="padding-top:56px;">
+  <div class="container">
+    <div class="eyebrow">Catalogue complet</div>
+    <h1 style="font-size:clamp(1.9rem,4vw,2.8rem);margin-bottom:10px;">Nos offres actuelles</h1>
+    <p style="max-width:560px;font-size:1.05rem;">Filtrez par type de véhicule, marque ou budget pour trouver la perle rare. Aucune vente en ligne : dites-nous que vous êtes intéressé, nous nous occupons du reste.</p>
+
+    <div class="filters" style="margin-top:36px;">
+      <div class="field">
+        <label for="filter-type">Type</label>
+        <select id="filter-type">
+          <option value="all">Tous les types</option>
+          <option value="voiture">Voitures</option>
+          <option value="utilitaire">Camionnettes & Utilitaires</option>
+          <option value="moto">Motos</option>
+          <option value="bateau">Bateaux</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="filter-marque">Marque</label>
+        <select id="filter-marque"><option value="all">Toutes les marques</option></select>
+      </div>
+      <div class="field">
+        <label for="filter-prix">Budget max.</label>
+        <select id="filter-prix">
+          <option value="all">Indifférent</option>
+          <option value="25000">25 000 €</option>
+          <option value="50000">50 000 €</option>
+          <option value="80000">80 000 €</option>
+          <option value="120000">120 000 €</option>
+          <option value="200000">200 000 €</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="filter-tri">Trier par</label>
+        <select id="filter-tri">
+          <option value="recent">Plus récent</option>
+          <option value="prix-asc">Prix croissant</option>
+          <option value="prix-desc">Prix décroissant</option>
+          <option value="annee-desc">Année</option>
+        </select>
+      </div>
+      <div class="field field--grow">
+        <label for="filter-search">Rechercher</label>
+        <input id="filter-search" type="text" placeholder="Marque, modèle...">
+      </div>
+    </div>
+
+    <p class="filters-results" data-results-count>Chargement…</p>
+
+    <div class="listing-grid" data-all-listings></div>
+
+    <div class="empty-state" data-empty-state style="display:none;">
+      <h3>Aucun véhicule ne correspond</h3>
+      <p>Essayez d'élargir vos critères de recherche, ou contactez-nous : de nouvelles annonces arrivent chaque semaine.</p>
+      <a class="btn btn--outline" href="contact.html">Nous contacter</a>
+    </div>
+  </div>
+</section>
+
+<section class="section--tight">
+  <div class="container">
+    <div class="cta-banner">
+      <div>
+        <h2>Le véhicule idéal n'est pas encore en ligne ?</h2>
+        <p>Dites-nous ce que vous recherchez, nous élargissons notre recherche pour vous.</p>
+      </div>
+      <div class="cta-banner__actions">
+        <a href="contact.html" class="btn btn--primary">Nous contacter</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="brand" style="margin-bottom:14px;">
+          <span class="brand__mark"><svg viewBox="0 0 24 24" width="20" height="20" style="color:var(--gold-soft)"><path d="M4 12h16M4 6h10M4 18h7" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg></span>
+          <span class="brand__name">Boat & <span>Car 06</span></span>
+        </a>
+        <p>Sélection de véhicules d'exception sur la Côte d'Azur : voitures, utilitaires, motos et bateaux.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Navigation</h4>
+        <a href="index.html">Accueil</a>
+        <a href="offres.html">Nos offres</a>
+        <a href="a-propos.html">À propos</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <div class="footer-col">
+        <h4>Véhicules</h4>
+        <a href="offres.html?type=voiture">Voitures</a>
+        <a href="offres.html?type=utilitaire">Utilitaires</a>
+        <a href="offres.html?type=moto">Motos</a>
+        <a href="offres.html?type=bateau">Bateaux</a>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <a data-cfg-phone-href href="tel:"><span data-cfg-phone></span></a>
+        <a data-cfg-email-href href="mailto:"><span data-cfg-email></span></a>
+        <span data-cfg-address style="display:block;padding:6px 0;font-size:.9rem;"></span>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span data-cfg-year></span> Boat & Car 06 — Tous droits réservés</span>
+      <a href="a-propos.html#mentions-legales">Mentions légales</a>
+    </div>
+  </div>
+</footer>
+
+<div class="modal-overlay" id="interest-modal">
+  <div class="modal">
+    <button class="modal-close" data-modal-close aria-label="Fermer">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+    <h3 style="text-transform:none;">Je suis intéressé</h3>
+    <p class="modal-sub" data-modal-sub>Décrivez votre projet, nous revenons vers vous rapidement.</p>
+    <form data-lead-form>
+      <input type="hidden" id="interest-vehicule" name="vehicule" value="">
+      <div class="form-grid">
+        <div class="field"><label>Prénom</label><input type="text" name="prenom" required></div>
+        <div class="field"><label>Nom</label><input type="text" name="nom" required></div>
+        <div class="field"><label>Email</label><input type="email" name="email" required></div>
+        <div class="field"><label>Téléphone</label><input type="tel" name="telephone" required></div>
+        <div class="field field--full"><label>Message</label><textarea name="message" placeholder="Votre message (optionnel)"></textarea></div>
+      </div>
+      <button type="submit" class="btn btn--primary btn--block" style="margin-top:18px" data-label="Envoyer ma demande">Envoyer ma demande</button>
+      <div class="form-success">✓ Merci ! Votre demande a bien été transmise, nous revenons vers vous rapidement.</div>
+    </form>
+  </div>
+</div>
+
+<script src="data-config.js"></script>
+<script src="data-brands.js"></script>
+<script src="data-listings.js"></script>
+<script src="data-sales.js"></script>
+<script src="data-reviews.js"></script>
+<script src="main.js"></script>
+</body>
+</html>
