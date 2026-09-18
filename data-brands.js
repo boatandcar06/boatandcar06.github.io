@@ -15,8 +15,9 @@ const VEHICLE_TYPES = [
 
 const BRANDS_BY_TYPE = {
   voiture: [
-    "Audi", "BMW", "Mercedes-Benz", "Porsche", "Volkswagen",
-    "Peugeot", "Renault", "Citroën", "DS Automobiles", "Alpine",
+    "Renault", "Peugeot", "Citroën", "Dacia", "Volkswagen",
+    "Audi", "BMW", "Mercedes-Benz", "Porsche",
+    "DS Automobiles", "Alpine",
     "Ferrari", "Lamborghini", "Maserati", "Jaguar", "Land Rover", "Autre"
   ],
   utilitaire: [
@@ -28,8 +29,8 @@ const BRANDS_BY_TYPE = {
     "Triumph", "KTM", "Harley-Davidson", "Suzuki", "Autre"
   ],
   bateau: [
-    "Bénéteau", "Jeanneau", "Quicksilver", "Zodiac", "Four Winns",
-    "Yamaha", "Autre"
+    "Quicksilver", "B2 Marine", "Zodiac", "Bénéteau", "Jeanneau",
+    "Four Winns", "Yamaha", "Autre"
   ]
 };
 
@@ -51,6 +52,7 @@ const MODELS_BY_BRAND = {
     "Volkswagen": ["Polo", "Golf", "Golf GTI", "Passat", "Arteon", "T-Cross", "T-Roc", "Tiguan", "Touareg", "ID.3", "ID.4", "ID.5", "Touran"],
     "Peugeot": ["108", "208", "308", "408", "508", "2008", "3008", "5008", "RCZ"],
     "Renault": ["Clio", "Megane", "Talisman", "Captur", "Kadjar", "Austral", "Arkana", "Scenic", "Espace", "Zoe"],
+    "Dacia": ["Sandero", "Sandero Stepway", "Duster", "Jogger", "Spring", "Logan"],
     "Citroën": ["C3", "C4", "C5 X", "C3 Aircross", "C4 Cactus", "C5 Aircross", "Berlingo"],
     "DS Automobiles": ["DS 3", "DS 4", "DS 7", "DS 9"],
     "Alpine": ["A110", "A110 S", "A110 GT"],
@@ -84,7 +86,8 @@ const MODELS_BY_BRAND = {
   bateau: {
     "Bénéteau": ["Antares 8", "Antares 6", "Flyer 8", "Gran Turismo 32", "Oceanis 34"],
     "Jeanneau": ["Merry Fisher 795", "Merry Fisher 895", "Cap Camarat 7.5", "Leader 33"],
-    "Quicksilver": ["Activ 675", "Activ 755", "605 Pilothouse"],
+    "Quicksilver": ["Activ 555", "Activ 675", "Activ 755", "605 Pilothouse"],
+    "B2 Marine": ["Neptun 550", "Neptun 630", "Corsica 500"],
     "Zodiac": ["Medline 7.5", "Medline 6.5", "Open 5.5", "Pro 6 Man"],
     "Four Winns": ["H2", "H1", "V6"],
     "Yamaha": ["FX Cruiser", "242X", "190 FSH"]

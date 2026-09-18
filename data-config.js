@@ -9,7 +9,7 @@
 const SITE_CONFIG = {
   // Identité
   companyName: "Boat & Car 06",
-  tagline: "Véhicules d'exception, sélection sans compromis",
+  tagline: "Des véhicules fiables, sélectionnés avec soin, à prix accessible",
   city: "Alpes-Maritimes (06)",
 
   // Coordonnées — à adapter
