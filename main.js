@@ -166,16 +166,28 @@
       if (marques.includes(current)) marqueSelect.value = current;
     }
 
-    // Modèle : dépend des annonces réellement en stock pour le type/marque choisis
+    // Modèle : nécessite d'avoir choisi une marque au préalable (sinon la liste
+    // serait trop longue et mélangerait des modèles sans rapport entre eux)
     function refreshModeles() {
-      let pool = LISTINGS;
+      if (marqueSelect.value === "all") {
+        modeleSelect.innerHTML = '<option value="all">Choisissez une marque d’abord</option>';
+        modeleSelect.value = "all";
+        modeleSelect.disabled = true;
+        return;
+      }
+      let pool = LISTINGS.filter(l => l.marque === marqueSelect.value);
       if (typeSelect.value !== "all") pool = pool.filter(l => l.type === typeSelect.value);
-      if (marqueSelect.value !== "all") pool = pool.filter(l => l.marque === marqueSelect.value);
       const modeles = [...new Set(pool.map(l => l.modele))].sort((a, b) => a.localeCompare(b, "fr"));
       const current = modeleSelect.value;
+      if (modeles.length === 0) {
+        modeleSelect.innerHTML = '<option value="all">Aucun modèle disponible</option>';
+        modeleSelect.value = "all";
+        modeleSelect.disabled = true;
+        return;
+      }
       modeleSelect.innerHTML = '<option value="all">Tous les modèles</option>' +
         modeles.map(m => `<option value="${m}">${m}</option>`).join("");
-      modeleSelect.disabled = modeles.length === 0;
+      modeleSelect.disabled = false;
       if (modeles.includes(current)) modeleSelect.value = current;
     }
 
