@@ -8,6 +8,23 @@
   "use strict";
 
   /* ---------------------------------------------------------------- */
+  /* Échappement HTML (sécurité)                                       */
+  /* Les annonces sont saisies via l'espace admin puis publiées telles */
+  /* quelles dans data-listings.js : on échappe systématiquement ces   */
+  /* champs avant de les insérer dans le HTML pour éviter qu'un texte  */
+  /* contenant des balises ne soit interprété comme du code.           */
+  /* ---------------------------------------------------------------- */
+  function escapeHtml(value) {
+    return String(value == null ? "" : value)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+  }
+  window.escapeHtml = escapeHtml; // réutilisé par admin.js
+
+  /* ---------------------------------------------------------------- */
   /* Icônes véhicules (SVG vectoriel, pas de photo — voir README)      */
   /* ---------------------------------------------------------------- */
   const ICON_COLOR = "#0091d0";
@@ -51,7 +68,7 @@
 
   function mediaHTML(item) {
     if (item.images && item.images.length) {
-      return `<img src="${item.images[0]}" alt="${item.marque} ${item.modele}">`;
+      return `<img src="${escapeHtml(item.images[0])}" alt="${escapeHtml(item.marque)} ${escapeHtml(item.modele)}">`;
     }
     return vehicleIcon(item.type);
   }
@@ -123,30 +140,30 @@
       ? `<span class="badge badge--reserved">Réservé</span>`
       : `<span class="badge badge--available">Disponible</span>`;
     return `
-    <article class="listing-card" data-type="${item.type}" data-marque="${item.marque}" data-prix="${item.prix}" data-annee="${item.annee}">
+    <article class="listing-card" data-type="${escapeHtml(item.type)}" data-marque="${escapeHtml(item.marque)}" data-prix="${escapeHtml(item.prix)}" data-annee="${escapeHtml(item.annee)}">
       <div class="listing-card__media">
         ${statusBadge}
-        <span class="badge badge--type">${typeLabel(item.type)}</span>
+        <span class="badge badge--type">${escapeHtml(typeLabel(item.type))}</span>
         ${mediaHTML(item)}
         <span class="stripe-bar"></span>
       </div>
       <div class="listing-card__body">
         <div class="listing-card__title">
-          <h3>${item.marque} ${item.modele}</h3>
-          <span class="year">${item.annee}</span>
+          <h3>${escapeHtml(item.marque)} ${escapeHtml(item.modele)}</h3>
+          <span class="year">${escapeHtml(item.annee)}</span>
         </div>
         <div class="listing-card__meta">
-          <span class="chip">${formatKm(item.km, item.type)}</span>
-          <span class="chip">${item.carburant}</span>
-          <span class="chip">${item.puissance}</span>
+          <span class="chip">${escapeHtml(formatKm(item.km, item.type))}</span>
+          <span class="chip">${escapeHtml(item.carburant)}</span>
+          <span class="chip">${escapeHtml(item.puissance)}</span>
         </div>
         <div class="listing-card__price">
-          <b>${formatPrice(item.prix)}</b>
+          <b>${escapeHtml(formatPrice(item.prix))}</b>
         </div>
       </div>
       <div class="listing-card__actions">
-        <a class="btn btn--outline btn--sm btn--block" href="vehicule.html?id=${item.id}">Voir la fiche</a>
-        <button class="btn btn--primary btn--sm btn--block" data-open-interest data-vehicle-id="${item.id}" data-vehicle-name="${item.marque} ${item.modele}">Je suis intéressé</button>
+        <a class="btn btn--outline btn--sm btn--block" href="vehicule.html?id=${encodeURIComponent(item.id)}">Voir la fiche</a>
+        <button class="btn btn--primary btn--sm btn--block" data-open-interest data-vehicle-id="${escapeHtml(item.id)}" data-vehicle-name="${escapeHtml(item.marque)} ${escapeHtml(item.modele)}">Je suis intéressé</button>
       </div>
     </article>`;
   }
@@ -314,7 +331,7 @@
 
     root.innerHTML = `
       <div class="breadcrumb">
-        <a href="index.html">Accueil</a> <span>/</span> <a href="offres.html">Nos offres</a> <span>/</span> <span>${item.marque} ${item.modele}</span>
+        <a href="index.html">Accueil</a> <span>/</span> <a href="offres.html">Nos offres</a> <span>/</span> <span>${escapeHtml(item.marque)} ${escapeHtml(item.modele)}</span>
       </div>
       <div class="detail-grid">
         <div>
@@ -324,29 +341,29 @@
           </div>
           ${item.images && item.images.length > 1 ? `
           <div class="detail-thumbs">
-            ${item.images.map((src, i) => `<button type="button" class="${i === 0 ? "active" : ""}" data-thumb="${i}"><img src="${src}" alt=""></button>`).join("")}
+            ${item.images.map((src, i) => `<button type="button" class="${i === 0 ? "active" : ""}" data-thumb="${i}"><img src="${escapeHtml(src)}" alt=""></button>`).join("")}
           </div>` : ""}
-          <div class="detail-points">${statusBadge}<span class="badge badge--type" style="position:static">${typeLabel(item.type)}</span>${(item.points_forts||[]).map(p => `<span class="chip">${p}</span>`).join("")}</div>
+          <div class="detail-points">${statusBadge}<span class="badge badge--type" style="position:static">${escapeHtml(typeLabel(item.type))}</span>${(item.points_forts||[]).map(p => `<span class="chip">${escapeHtml(p)}</span>`).join("")}</div>
           <h2 style="text-transform:none;font-size:1.5rem;margin-top:24px;">Description</h2>
-          <p>${item.description}</p>
+          <p>${escapeHtml(item.description)}</p>
           <h2 style="text-transform:none;font-size:1.3rem;margin-top:28px;">Caractéristiques</h2>
           <div class="spec-table">
-            <div><small>Marque</small><strong>${item.marque}</strong></div>
-            <div><small>Modèle</small><strong>${item.modele}</strong></div>
-            <div><small>Année</small><strong>${item.annee}</strong></div>
-            <div><small>${item.type === "bateau" ? "Heures moteur" : "Kilométrage"}</small><strong>${new Intl.NumberFormat("fr-FR").format(item.km)}</strong></div>
-            <div><small>Carburant</small><strong>${item.carburant}</strong></div>
-            <div><small>Transmission</small><strong>${item.transmission}</strong></div>
-            <div><small>Couleur</small><strong>${item.couleur}</strong></div>
-            <div><small>Puissance</small><strong>${item.puissance}</strong></div>
+            <div><small>Marque</small><strong>${escapeHtml(item.marque)}</strong></div>
+            <div><small>Modèle</small><strong>${escapeHtml(item.modele)}</strong></div>
+            <div><small>Année</small><strong>${escapeHtml(item.annee)}</strong></div>
+            <div><small>${item.type === "bateau" ? "Heures moteur" : "Kilométrage"}</small><strong>${escapeHtml(new Intl.NumberFormat("fr-FR").format(item.km))}</strong></div>
+            <div><small>Carburant</small><strong>${escapeHtml(item.carburant)}</strong></div>
+            <div><small>Transmission</small><strong>${escapeHtml(item.transmission)}</strong></div>
+            <div><small>Couleur</small><strong>${escapeHtml(item.couleur)}</strong></div>
+            <div><small>Puissance</small><strong>${escapeHtml(item.puissance)}</strong></div>
           </div>
         </div>
         <aside class="detail-side">
-          <div class="price">${formatPrice(item.prix)}</div>
+          <div class="price">${escapeHtml(formatPrice(item.prix))}</div>
           <div class="price-sub">Prix affiché, hors frais éventuels de mise en route</div>
-          <button class="btn btn--primary btn--block" data-open-interest data-vehicle-id="${item.id}" data-vehicle-name="${item.marque} ${item.modele}">Je suis intéressé</button>
+          <button class="btn btn--primary btn--block" data-open-interest data-vehicle-id="${escapeHtml(item.id)}" data-vehicle-name="${escapeHtml(item.marque)} ${escapeHtml(item.modele)}">Je suis intéressé</button>
           <a class="btn btn--outline btn--block" style="margin-top:12px" href="contact.html">Poser une question</a>
-          <p style="margin-top:20px;font-size:.82rem;">Aucun paiement en ligne : un membre de l'équipe ${SITE_CONFIG.companyName} vous recontacte pour organiser la suite (essai, visite, réservation).</p>
+          <p style="margin-top:20px;font-size:.82rem;">Aucun paiement en ligne : un membre de l'équipe ${escapeHtml(SITE_CONFIG.companyName)} vous recontacte pour organiser la suite (essai, visite, réservation).</p>
         </aside>
       </div>
     `;
@@ -381,12 +398,12 @@
     el.innerHTML = REVIEWS.map(r => `
       <div class="review-card">
         ${starsHTML(r.note)}
-        <p>"${r.texte}"</p>
+        <p>"${escapeHtml(r.texte)}"</p>
         <div class="review-card__author">
-          <div class="review-card__avatar">${r.nom.charAt(0)}</div>
+          <div class="review-card__avatar">${escapeHtml(r.nom.charAt(0))}</div>
           <div>
-            <strong style="font-size:.9rem;">${r.nom}</strong>
-            <small>${r.vehicule}</small>
+            <strong style="font-size:.9rem;">${escapeHtml(r.nom)}</strong>
+            <small>${escapeHtml(r.vehicule)}</small>
           </div>
         </div>
       </div>
@@ -401,9 +418,9 @@
     if (!el || typeof RECENT_SALES === "undefined") return;
     el.innerHTML = RECENT_SALES.map(s => `
       <div class="sales-row">
-        <div class="sales-row__name">${s.marque} ${s.modele} <span>${s.annee}</span></div>
-        <div class="sales-row__price">${formatPrice(s.prix)}</div>
-        <div class="sales-row__duration">${s.duree}</div>
+        <div class="sales-row__name">${escapeHtml(s.marque)} ${escapeHtml(s.modele)} <span>${escapeHtml(s.annee)}</span></div>
+        <div class="sales-row__price">${escapeHtml(formatPrice(s.prix))}</div>
+        <div class="sales-row__duration">${escapeHtml(s.duree)}</div>
         <div class="badge badge--sold" style="position:static;justify-self:start;">Vendu</div>
       </div>
     `).join("");

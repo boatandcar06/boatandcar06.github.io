@@ -1,8 +1,16 @@
 (function () {
   "use strict";
 
-  const ADMIN_USER = "admin";
-  const ADMIN_PASS = "bcar06";
+  // Identifiants admin : on ne stocke pas le mot de passe en clair dans le
+  // code source (public sur GitHub), seulement l'empreinte SHA-256 de
+  // "identifiant:mot de passe". Voir le README pour changer le mot de passe.
+  // IMPORTANT : ceci reste une protection d'accès "de courtoisie" côté
+  // navigateur, pas une vraie authentification serveur (voir README).
+  const ADMIN_HASH = "2c763bdf2e6b0c12586226b799a63eacd652b305c4e23caec5aef31605733b1b";
+  async function sha256Hex(str) {
+    const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
+    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, "0")).join("");
+  }
   const AUTH_KEY = "bc06_admin_session";
   const DRAFT_KEY = "bc06_admin_listings_draft";
   const GH_REPO_KEY = "bc06_gh_repo";
@@ -67,10 +75,11 @@
     if (adminModal.classList.contains("open")) closeModal(adminModal);
   });
 
-  loginForm.addEventListener("submit", (e) => {
+  loginForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     const data = Object.fromEntries(new FormData(loginForm).entries());
-    if (data.username === ADMIN_USER && data.password === ADMIN_PASS) {
+    const hash = await sha256Hex(`${data.username || ""}:${data.password || ""}`);
+    if (hash === ADMIN_HASH) {
       setLoggedIn(true);
       closeModal(loginModal);
       openModal(adminModal);
@@ -260,22 +269,26 @@
 
   cancelBtn.addEventListener("click", resetForm);
 
+  function esc(v) {
+    return (typeof window.escapeHtml === "function") ? window.escapeHtml(v) : String(v == null ? "" : v);
+  }
+
   function renderAdmin() {
     countEl.textContent = draft.length + (draft.length > 1 ? " annonces" : " annonce");
     listEl.innerHTML = draft.map((item) => `
       <div class="admin-row">
         <div class="admin-row__title">
-          ${item.marque} ${item.modele}
-          <small>${item.annee} · ${new Intl.NumberFormat("fr-FR").format(item.prix)} € · ${item.status === "reserve" ? "Réservé" : "Disponible"}${item.images && item.images.length ? " · " + item.images.length + " photo" + (item.images.length > 1 ? "s" : "") : ""}</small>
+          ${esc(item.marque)} ${esc(item.modele)}
+          <small>${esc(item.annee)} · ${esc(new Intl.NumberFormat("fr-FR").format(item.prix))} € · ${item.status === "reserve" ? "Réservé" : "Disponible"}${item.images && item.images.length ? " · " + item.images.length + " photo" + (item.images.length > 1 ? "s" : "") : ""}</small>
         </div>
         <div class="admin-row__actions">
-          <button type="button" class="icon-btn" data-toggle-status="${item.id}" title="Basculer disponible / réservé">
+          <button type="button" class="icon-btn" data-toggle-status="${esc(item.id)}" title="Basculer disponible / réservé">
             <svg viewBox="0 0 24 24" fill="none"><path d="M4 12l5 5L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </button>
-          <button type="button" class="icon-btn" data-edit="${item.id}" title="Modifier l'annonce">
+          <button type="button" class="icon-btn" data-edit="${esc(item.id)}" title="Modifier l'annonce">
             <svg viewBox="0 0 24 24" fill="none"><path d="M4 20h4L18.5 9.5a2.1 2.1 0 0 0-3-3L5 17v3z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
           </button>
-          <button type="button" class="icon-btn" data-remove="${item.id}" title="Retirer l'annonce">
+          <button type="button" class="icon-btn" data-remove="${esc(item.id)}" title="Retirer l'annonce">
             <svg viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
           </button>
         </div>

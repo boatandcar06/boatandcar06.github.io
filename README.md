@@ -37,7 +37,7 @@ La page **`a-propos.html`**, section "Mentions légales", reprend les informatio
 
 Il n'y a pas d'URL séparée : l'espace admin est intégré à chaque page du site, derrière l'icône **Connexion** en haut à droite du menu.
 
-1. Cliquez sur l'icône Connexion, identifiez-vous (**admin** / **bcar06** par défaut — modifiable dans `admin.js`, constantes `ADMIN_USER` et `ADMIN_PASS`).
+1. Cliquez sur l'icône Connexion, identifiez-vous (voir les identifiants transmis séparément — modifiables dans `admin.js`, voir section 8 "Sécurité" ci-dessous).
 2. Ajoutez une annonce (avec jusqu'à 6 photos) via le formulaire, ou cliquez sur le crayon d'une annonce existante pour la modifier.
 3. Cliquez sur l'icône réglages (engrenage) pour renseigner une fois le dépôt GitHub (`owner/repo`) et un token d'accès personnel GitHub (scope Contents en lecture/écriture sur ce dépôt). Le token est stocké uniquement dans le navigateur.
 4. Cliquez sur **"Publier sur le site"** : les modifications sont envoyées directement sur GitHub et le site se met à jour en 1 à 2 minutes.
@@ -69,3 +69,17 @@ Depuis l'espace admin, chaque annonce peut avoir jusqu'à 6 photos (compressées
 ## 7. Personnalisation visuelle
 
 Les couleurs, polices et espacements sont centralisés en haut de `style.css` (bloc `:root`, "Design tokens") : ajustez `--azure`, `--turquoise`, `--terracotta`, `--stripe-1/2/3` etc. pour affiner l'identité visuelle.
+
+## 8. Sécurité
+
+Ce site est **statique** (aucun serveur, aucune base de données) : cela limite ce qu'il est possible de sécuriser réellement, et il faut le garder en tête.
+
+**Ce qui a été renforcé :**
+- Le mot de passe admin n'est plus stocké en clair dans le code source : seule son empreinte SHA-256 (`ADMIN_HASH` dans `admin.js`) y figure, pour éviter qu'il soit lisible en clair par un simple "Afficher le code source".
+- Toutes les données des annonces (marque, modèle, description...) sont désormais échappées avant d'être affichées, pour empêcher qu'un texte contenant des balises HTML ne soit exécuté comme du code sur le site.
+- Une politique de sécurité (Content-Security-Policy) bloque le chargement de tout script ou iframe provenant d'un site tiers non autorisé.
+
+**Limites inhérentes à ce type de site (dépôt GitHub public, requis pour GitHub Pages gratuit) :**
+- Le contrôle d'accès à l'espace admin reste une protection "de courtoisie" côté navigateur, pas une vraie authentification serveur : une personne suffisamment déterminée et technique peut toujours contourner l'écran de connexion. Ne considérez pas cet espace admin comme un rempart contre un attaquant motivé — pour une vraie authentification, il faudrait un service tiers (ex. Cloudflare Access, Netlify Identity) ou un petit serveur dédié.
+- Le token GitHub que vous enregistrez dans les réglages de publication est stocké dans le navigateur (jamais envoyé ailleurs qu'à GitHub). Créez-le comme **"fine-grained personal access token"** limité à ce seul dépôt, avec uniquement la permission **Contents: Read and write**, et une date d'expiration (90 jours par exemple). Régénérez-le si vous changez d'ordinateur partagé ou en cas de doute.
+- Pour changer le mot de passe admin : demandez à votre assistant de le régénérer, ou calculez vous-même le SHA-256 de `identifiant:motdepasse` et remplacez `ADMIN_HASH` dans `admin.js`.

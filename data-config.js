@@ -13,8 +13,8 @@ const SITE_CONFIG = {
   city: "Alpes-Maritimes (06)",
 
   // Coordonnées — à adapter
-  phone: "+33 4 00 00 00 00",
-  phoneDisplay: "04 00 00 00 00",
+  phone: "+33 7 59 99 23 04",
+  phoneDisplay: "07 59 99 23 04",
   email: "contact@boatandcar06.fr",
   address: "2167 Route de la Baronne, 06510 Gattières, France",
 
