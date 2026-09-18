@@ -479,6 +479,10 @@ p{ margin: 0 0 1em; color: var(--text-dim); }
 }
 .field input:focus, .field select:focus, .field textarea:focus{ outline:none; border-color: var(--azure); background:#fff; }
 .filters .field--grow{ flex:1; min-width:220px; }
+.field--budget{ min-width:230px; }
+.budget-range{ display:flex; align-items:center; gap:8px; }
+.budget-range input{ width:100%; min-width:0; }
+.budget-range span{ color: var(--text-faint); font-size:.85rem; }
 .filters-results{ font-size:.85rem; color: var(--text-faint); margin-bottom:20px; }
 
 .empty-state{

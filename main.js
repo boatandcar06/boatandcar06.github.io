@@ -61,6 +61,15 @@
     return found ? found.label.replace(/s$/, "") : type;
   }
 
+  // Catalogue complet des marques (data-brands.js), pas seulement celles en stock
+  function brandsForType(type) {
+    if (typeof BRANDS_BY_TYPE === "undefined") return [];
+    const lists = type === "all" ? Object.values(BRANDS_BY_TYPE) : [BRANDS_BY_TYPE[type] || []];
+    const set = new Set();
+    lists.forEach(list => list.forEach(b => { if (b !== "Autre") set.add(b); }));
+    return [...set].sort((a, b) => a.localeCompare(b, "fr")).concat(["Autre"]);
+  }
+
   /* ---------------------------------------------------------------- */
   /* Formatage                                                         */
   /* ---------------------------------------------------------------- */
@@ -140,21 +149,34 @@
 
     const typeSelect = document.querySelector("#filter-type");
     const marqueSelect = document.querySelector("#filter-marque");
-    const prixSelect = document.querySelector("#filter-prix");
+    const modeleSelect = document.querySelector("#filter-modele");
+    const prixMinInput = document.querySelector("#filter-prix-min");
+    const prixMaxInput = document.querySelector("#filter-prix-max");
     const triSelect = document.querySelector("#filter-tri");
     const searchInput = document.querySelector("#filter-search");
     const resultsCount = document.querySelector("[data-results-count]");
     const emptyState = document.querySelector("[data-empty-state]");
 
-    // Pré-remplir marques disponibles
+    // Marque : catalogue complet (toutes marques du type choisi, en stock ou non)
     function refreshMarques() {
-      const type = typeSelect.value;
-      const pool = type === "all" ? LISTINGS : LISTINGS.filter(l => l.type === type);
-      const marques = [...new Set(pool.map(l => l.marque))].sort();
+      const marques = brandsForType(typeSelect.value);
       const current = marqueSelect.value;
       marqueSelect.innerHTML = '<option value="all">Toutes les marques</option>' +
         marques.map(m => `<option value="${m}">${m}</option>`).join("");
       if (marques.includes(current)) marqueSelect.value = current;
+    }
+
+    // Modèle : dépend des annonces réellement en stock pour le type/marque choisis
+    function refreshModeles() {
+      let pool = LISTINGS;
+      if (typeSelect.value !== "all") pool = pool.filter(l => l.type === typeSelect.value);
+      if (marqueSelect.value !== "all") pool = pool.filter(l => l.marque === marqueSelect.value);
+      const modeles = [...new Set(pool.map(l => l.modele))].sort((a, b) => a.localeCompare(b, "fr"));
+      const current = modeleSelect.value;
+      modeleSelect.innerHTML = '<option value="all">Tous les modèles</option>' +
+        modeles.map(m => `<option value="${m}">${m}</option>`).join("");
+      modeleSelect.disabled = modeles.length === 0;
+      if (modeles.includes(current)) modeleSelect.value = current;
     }
 
     function applyFilters() {
@@ -162,10 +184,11 @@
 
       if (typeSelect.value !== "all") items = items.filter(l => l.type === typeSelect.value);
       if (marqueSelect.value !== "all") items = items.filter(l => l.marque === marqueSelect.value);
-      if (prixSelect.value !== "all") {
-        const max = parseInt(prixSelect.value, 10);
-        items = items.filter(l => l.prix <= max);
-      }
+      if (modeleSelect.value !== "all") items = items.filter(l => l.modele === modeleSelect.value);
+      const min = parseInt(prixMinInput.value, 10);
+      const max = parseInt(prixMaxInput.value, 10);
+      if (!isNaN(min)) items = items.filter(l => l.prix >= min);
+      if (!isNaN(max)) items = items.filter(l => l.prix <= max);
       const q = searchInput.value.trim().toLowerCase();
       if (q) {
         items = items.filter(l => (`${l.marque} ${l.modele}`).toLowerCase().includes(q));
@@ -191,13 +214,16 @@
     const urlBudget = qs("budget");
     if (urlType) typeSelect.value = urlType;
 
-    typeSelect.addEventListener("change", () => { refreshMarques(); applyFilters(); });
-    [marqueSelect, prixSelect, triSelect].forEach(el => el.addEventListener("change", applyFilters));
+    typeSelect.addEventListener("change", () => { refreshMarques(); refreshModeles(); applyFilters(); });
+    marqueSelect.addEventListener("change", () => { refreshModeles(); applyFilters(); });
+    [modeleSelect, triSelect].forEach(el => el.addEventListener("change", applyFilters));
+    [prixMinInput, prixMaxInput].forEach(el => el.addEventListener("input", applyFilters));
     searchInput.addEventListener("input", applyFilters);
 
     refreshMarques();
     if (urlMarque) marqueSelect.value = urlMarque;
-    if (urlBudget) prixSelect.value = urlBudget;
+    refreshModeles();
+    if (urlBudget) prixMaxInput.value = urlBudget;
     applyFilters();
   }
 
@@ -211,9 +237,7 @@
     const marqueSelect = form.querySelector("#hero-marque");
 
     function refreshMarques() {
-      const type = typeSelect.value;
-      const pool = type === "all" ? LISTINGS : LISTINGS.filter(l => l.type === type);
-      const marques = [...new Set(pool.map(l => l.marque))].sort();
+      const marques = brandsForType(typeSelect.value);
       marqueSelect.innerHTML = '<option value="all">Toutes les marques</option>' +
         marques.map(m => `<option value="${m}">${m}</option>`).join("");
     }
