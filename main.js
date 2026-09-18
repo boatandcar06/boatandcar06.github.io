@@ -70,6 +70,24 @@
     return [...set].sort((a, b) => a.localeCompare(b, "fr")).concat(["Autre"]);
   }
 
+  // Catalogue complet des modèles existants pour une marque (data-brands.js),
+  // complété par les modèles réellement en stock (au cas où un modèle ajouté
+  // depuis l'admin ne figure pas encore dans le catalogue)
+  function modelesForBrand(marque, type) {
+    const set = new Set();
+    if (typeof MODELS_BY_BRAND !== "undefined") {
+      const types = type === "all" ? Object.keys(MODELS_BY_BRAND) : [type];
+      types.forEach(t => {
+        const list = (MODELS_BY_BRAND[t] && MODELS_BY_BRAND[t][marque]) || [];
+        list.forEach(m => set.add(m));
+      });
+    }
+    let pool = LISTINGS.filter(l => l.marque === marque);
+    if (type !== "all") pool = pool.filter(l => l.type === type);
+    pool.forEach(l => set.add(l.modele));
+    return [...set].sort((a, b) => a.localeCompare(b, "fr"));
+  }
+
   /* ---------------------------------------------------------------- */
   /* Formatage                                                         */
   /* ---------------------------------------------------------------- */
@@ -167,7 +185,8 @@
     }
 
     // Modèle : nécessite d'avoir choisi une marque au préalable (sinon la liste
-    // serait trop longue et mélangerait des modèles sans rapport entre eux)
+    // serait trop longue et mélangerait des modèles sans rapport entre eux).
+    // Liste les modèles existants de la marque (catalogue), pas seulement ceux en stock.
     function refreshModeles() {
       if (marqueSelect.value === "all") {
         modeleSelect.innerHTML = '<option value="all">Choisissez une marque d’abord</option>';
@@ -175,9 +194,7 @@
         modeleSelect.disabled = true;
         return;
       }
-      let pool = LISTINGS.filter(l => l.marque === marqueSelect.value);
-      if (typeSelect.value !== "all") pool = pool.filter(l => l.type === typeSelect.value);
-      const modeles = [...new Set(pool.map(l => l.modele))].sort((a, b) => a.localeCompare(b, "fr"));
+      const modeles = modelesForBrand(marqueSelect.value, typeSelect.value);
       const current = modeleSelect.value;
       if (modeles.length === 0) {
         modeleSelect.innerHTML = '<option value="all">Aucun modèle disponible</option>';
