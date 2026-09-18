@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data:; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https:; frame-src https://www.google.com; object-src 'none'; base-uri 'self'; form-action 'self';">
 <title>Boat & Car 06 · Véhicules d'exception sur la Côte d'Azur</title>
 <meta name="description" content="Boat & Car 06 : sélection de voitures, utilitaires, motos et bateaux d'exception sur la Côte d'Azur. Consultez nos offres et manifestez votre intérêt en quelques clics.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='5' fill='%230a0a0c'/%3E%3Cpath d='M4 16h16M4 10h10' stroke='%23cfa441' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="icon" href="logo-icon.png" type="image/png">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -14,8 +14,7 @@
 <header class="navbar">
   <div class="container">
     <a href="index.html" class="brand">
-      <span class="brand__mark"><svg viewBox="0 0 24 24" width="20" height="20" style="color:var(--gold-soft)"><path d="M4 12h16M4 6h10M4 18h7" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg></span>
-      <span class="brand__name">Boat & <span>Car 06</span></span>
+      <img src="logo-lockup.png" alt="Boat & Car 06" class="brand__logo">
     </a>
     <nav class="nav-links">
       <a href="index.html" class="active">Accueil</a>
@@ -37,6 +36,7 @@
       </button>
     </div>
   </div>
+</header>
   <div class="mobile-nav" data-mobile-nav>
     <a href="index.html">Accueil</a>
     <a href="offres.html">Nos offres</a>
@@ -44,43 +44,29 @@
     <a href="contact.html">Contact</a>
     <a class="btn btn--primary btn--block" href="contact.html">Nous contacter</a>
   </div>
-</header>
+
 
 <!-- ========================= HERO / FUNNEL ENTRY ========================= -->
 <section class="hero">
   <span class="hero__stripe"></span>
   <div class="container">
-    <div class="hero__grid">
-      <div>
-        <div class="hero__kicker"><span class="dot"></span> Nouvelles annonces chaque semaine</div>
-        <h1>L'excellence automobile, <span class="accent">nautique</span> &amp; moto sur la Côte d'Azur</h1>
-        <p class="hero__lead">Boat & Car 06 sélectionne pour vous des véhicules d'exception (voitures, utilitaires, motos et bateaux), contrôlés, garantis et prêts à changer de main.</p>
-        <div class="hero__ctas">
-          <a href="offres.html" class="btn btn--primary">Découvrir nos offres</a>
-          <a href="contact.html" class="btn btn--outline">Nous contacter</a>
-        </div>
-        <div class="hero__stats">
-          <div class="stat"><b data-count="30" data-suffix="+">0</b><span>Véhicules vendus</span></div>
-          <div class="stat"><b data-count="1" data-suffix=" an">0</b><span>D'expérience</span></div>
-          <div class="stat"><b data-count="98" data-suffix="%">0</b><span>Clients satisfaits</span></div>
-        </div>
+    <div class="hero__content">
+      <div class="hero__kicker"><span class="dot"></span> Nouvelles annonces chaque semaine</div>
+      <h1>L'excellence automobile, <span class="accent">nautique</span> &amp; moto sur la Côte d'Azur</h1>
+      <p class="hero__lead">Boat & Car 06 sélectionne pour vous des véhicules d'exception (voitures, utilitaires, motos et bateaux), contrôlés, garantis et prêts à changer de main.</p>
+      <div class="hero__ctas">
+        <a href="offres.html" class="btn btn--primary">Découvrir nos offres</a>
+        <a href="contact.html" class="btn btn--outline">Nous contacter</a>
       </div>
-      <div class="hero__visual">
-        <div class="hero__art">
-          <svg viewBox="0 0 240 120" style="color:#cfa441" xmlns="http://www.w3.org/2000/svg">
-            <path d="M20 82 C20 70 28 62 40 62 L58 62 L78 36 C82 30 90 26 98 26 L165 26 C176 26 186 32 192 42 L206 62 L214 62 C222 62 228 68 228 76 L228 82" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M20 82 L228 82" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round"/>
-            <path d="M78 36 L86 62 M165 26 L178 62" stroke="currentColor" stroke-width="2" fill="none" opacity=".55"/>
-            <circle cx="66" cy="86" r="16" stroke="currentColor" stroke-width="3" fill="none"/>
-            <circle cx="188" cy="86" r="16" stroke="currentColor" stroke-width="3" fill="none"/>
-          </svg>
-          <span class="stripe-bar"></span>
-          <div class="hero__badge">
-            <div><small>Sélection du moment</small><strong>BMW M3 Competition</strong></div>
-            <a href="offres.html" class="btn btn--ghost btn--sm">Voir</a>
-          </div>
-        </div>
+      <div class="hero__stats">
+        <div class="stat"><b data-count="30" data-suffix="+">0</b><span>Véhicules vendus</span></div>
+        <div class="stat"><b data-count="1" data-suffix=" an">0</b><span>D'expérience</span></div>
+        <div class="stat"><b data-count="98" data-suffix="%">0</b><span>Clients satisfaits</span></div>
       </div>
+    </div>
+    <div class="hero__badge">
+      <div><small>Sélection du moment</small><strong>BMW M3 Competition</strong></div>
+      <a href="offres.html" class="btn btn--ghost btn--sm">Voir</a>
     </div>
   </div>
 </section>
@@ -261,8 +247,7 @@
     <div class="footer-grid">
       <div class="footer-brand">
         <a href="index.html" class="brand" style="margin-bottom:14px;">
-          <span class="brand__mark"><svg viewBox="0 0 24 24" width="20" height="20" style="color:var(--gold-soft)"><path d="M4 12h16M4 6h10M4 18h7" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg></span>
-          <span class="brand__name">Boat & <span>Car 06</span></span>
+          <img src="logo-lockup.png" alt="Boat & Car 06" class="brand__logo">
         </a>
         <p>Sélection de véhicules d'exception sur la Côte d'Azur : voitures, utilitaires, motos et bateaux. Une approche exigeante, jusqu'à la remise des clés.</p>
       </div>
