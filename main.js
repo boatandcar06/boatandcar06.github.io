@@ -233,6 +233,8 @@
     function applyFilters() {
       let items = LISTINGS.filter(l => l.status !== "vendu");
 
+      if (urlFeatured === "1") items = items.filter(l => l.featured);
+
       if (typeSelect.value !== "all") items = items.filter(l => l.type === typeSelect.value);
       if (marqueSelect.value !== "all") items = items.filter(l => l.marque === marqueSelect.value);
       if (modeleSelect.value !== "all") items = items.filter(l => l.modele === modeleSelect.value);
@@ -276,7 +278,17 @@
     const urlType = qs("type");
     const urlMarque = qs("marque");
     const urlBudget = qs("budget");
+    const urlFeatured = qs("featured");
     if (urlType) typeSelect.value = urlType;
+
+    if (urlFeatured === "1") {
+      const eyebrow = document.querySelector("[data-offres-eyebrow]");
+      const title = document.querySelector("[data-offres-title]");
+      const intro = document.querySelector("[data-offres-intro]");
+      if (eyebrow) eyebrow.textContent = "Sélection du moment";
+      if (title) title.textContent = "Notre sélection du moment";
+      if (intro) intro.innerHTML = 'Une sélection de véhicules mis en avant par notre équipe cette semaine. <a href="offres.html">Voir tout le catalogue</a>.';
+    }
 
     typeSelect.addEventListener("change", () => { refreshMarques(); refreshModeles(); applyFilters(); });
     marqueSelect.addEventListener("change", () => { refreshModeles(); applyFilters(); });
