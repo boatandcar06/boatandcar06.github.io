@@ -187,6 +187,11 @@
     const modeleSelect = document.querySelector("#filter-modele");
     const prixMinInput = document.querySelector("#filter-prix-min");
     const prixMaxInput = document.querySelector("#filter-prix-max");
+    const kmMinInput = document.querySelector("#filter-km-min");
+    const kmMaxInput = document.querySelector("#filter-km-max");
+    const anneeMinInput = document.querySelector("#filter-annee-min");
+    const anneeMaxInput = document.querySelector("#filter-annee-max");
+    const energieSelect = document.querySelector("#filter-energie");
     const triSelect = document.querySelector("#filter-tri");
     const searchInput = document.querySelector("#filter-search");
     const resultsCount = document.querySelector("[data-results-count]");
@@ -235,9 +240,22 @@
       const max = parseInt(prixMaxInput.value, 10);
       if (!isNaN(min)) items = items.filter(l => l.prix >= min);
       if (!isNaN(max)) items = items.filter(l => l.prix <= max);
+
+      const kmMin = parseInt(kmMinInput.value, 10);
+      const kmMax = parseInt(kmMaxInput.value, 10);
+      if (!isNaN(kmMin)) items = items.filter(l => l.km >= kmMin);
+      if (!isNaN(kmMax)) items = items.filter(l => l.km <= kmMax);
+
+      const anneeMin = parseInt(anneeMinInput.value, 10);
+      const anneeMax = parseInt(anneeMaxInput.value, 10);
+      if (!isNaN(anneeMin)) items = items.filter(l => l.annee >= anneeMin);
+      if (!isNaN(anneeMax)) items = items.filter(l => l.annee <= anneeMax);
+
+      if (energieSelect.value !== "all") items = items.filter(l => l.carburant === energieSelect.value);
+
       const q = searchInput.value.trim().toLowerCase();
       if (q) {
-        items = items.filter(l => (`${l.marque} ${l.modele}`).toLowerCase().includes(q));
+        items = items.filter(l => (`${l.marque} ${l.modele} ${l.description || ""}`).toLowerCase().includes(q));
       }
 
       switch (triSelect.value) {
@@ -262,8 +280,8 @@
 
     typeSelect.addEventListener("change", () => { refreshMarques(); refreshModeles(); applyFilters(); });
     marqueSelect.addEventListener("change", () => { refreshModeles(); applyFilters(); });
-    [modeleSelect, triSelect].forEach(el => el.addEventListener("change", applyFilters));
-    [prixMinInput, prixMaxInput].forEach(el => el.addEventListener("input", applyFilters));
+    [modeleSelect, triSelect, energieSelect].forEach(el => el.addEventListener("change", applyFilters));
+    [prixMinInput, prixMaxInput, kmMinInput, kmMaxInput, anneeMinInput, anneeMaxInput].forEach(el => el.addEventListener("input", applyFilters));
     searchInput.addEventListener("input", applyFilters);
 
     refreshMarques();
