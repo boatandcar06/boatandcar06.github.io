@@ -141,10 +141,12 @@
   /* Gestion des annonces                                              */
   /* ---------------------------------------------------------------- */
   function loadDraft() {
-    try {
-      const raw = localStorage.getItem(DRAFT_KEY);
-      if (raw) return JSON.parse(raw);
-    } catch (e) { /* ignore */ }
+    // On repart toujours des annonces actuellement publiées (LISTINGS) au
+    // chargement de la page, plutôt que d'un brouillon éventuellement resté
+    // dans le navigateur. Un ancien brouillon local (vide, incomplet, ou
+    // désynchronisé après une publication faite depuis un autre appareil)
+    // écraserait sinon les annonces réelles à la prochaine publication —
+    // c'est exactement ce qui a causé la perte des annonces le 20/09/2026.
     return JSON.parse(JSON.stringify(LISTINGS));
   }
   function saveDraft(d) {
@@ -382,6 +384,30 @@
       const getRes = await fetch(api, { headers });
       if (!getRes.ok) throw new Error("Dépôt ou token invalide (code " + getRes.status + ")");
       const current = await getRes.json();
+
+      // Garde-fou : si la publication réduirait fortement le nombre
+      // d'annonces en ligne (brouillon local désynchronisé, erreur de
+      // manipulation, etc.), on demande une confirmation explicite avant
+      // d'écraser les annonces existantes.
+      try {
+        const currentText = decodeURIComponent(escape(atob(current.content.replace(/\n/g, ""))));
+        const currentCount = (currentText.match(/\bid\s*:\s*["']/g) || []).length;
+        if (currentCount > 0 && draft.length < currentCount) {
+          const ok = confirm(
+            "Attention : il y a actuellement " + currentCount + " annonce(s) publiée(s) sur le site, " +
+            "et vous vous apprêtez à publier seulement " + draft.length + " annonce(s). " +
+            "Cela va supprimer " + (currentCount - draft.length) + " annonce(s) existante(s). Continuer ?"
+          );
+          if (!ok) {
+            publishFeedback.textContent = "Publication annulée.";
+            publishFeedback.style.display = "block";
+            publishBtn.disabled = false;
+            publishBtn.textContent = "Publier sur le site";
+            return;
+          }
+        }
+      } catch (e) { /* si la vérification échoue, on ne bloque pas la publication */ }
+
       const content = "const LISTINGS = " + JSON.stringify(draft, null, 2) + ";\n";
       const putRes = await fetch(api, {
         method: "PUT",
