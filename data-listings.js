@@ -1,5 +1,23 @@
 const LISTINGS = [
   {
+    "id": "mercedes-benz-classe-c-220-cdi-blue-efficiency-2012-jn6m",
+    "status": "disponible",
+    "type": "voiture",
+    "marque": "Mercedes-Benz",
+    "modele": "Classe C 220 CDI Blue Efficiency",
+    "annee": 2012,
+    "prix": 14990,
+    "km": 75006,
+    "carburant": "Diesel",
+    "transmission": "Manuelle",
+    "couleur": "Gris",
+    "puissance": "170",
+    "description": "On vous propose à la vente cette magnifique MERCEDES Classe C (204) phase 2 220 CDI Blue Efficiency 2.1 170ch Avantgarde BVM6 5 Portes, boite manuelle 6 vitesses, 5 places du 16/02/2012 totalisant 75 026 km , 9 cv fiscaux.\n\nOPTIONS ET ÉQUIPEMENTS :\nAudio - Télécommunications :\n- Bluetooth\n- Connectivité smartphone\n- GPS\n- Prise audio USB\n- Reconnaissance vocale\n- Système audio CD\n- Système audio MP3\n- Système de navigation\n\nConduite :\n- Essuie-glaces automatiques\n\nExtérieur :\n- Jantes alliage 17\"\n- Ouverture du coffre à distance\n- Radars de stationnement arrière\n- Radars de stationnement avant\n- Rétroviseurs rabattables électriquement\n- Rétroviseurs électriques\n\nIntérieur :\n- Accoudoir central\n- Accoudoir central arrière\n- Banquette 1/3 2/3\n- Banquette rabattable\n- Direction assistée\n- Ordinateur de bord\n- Température extérieure\n- Vitres électriques\n- Volant multifonction\n\nPack :\n- Fermeture électrique\n- Sièges électriques\n- Volant réglable\n\nSécurité :\n- Alerte oubli ceinture conducteur\n- Antipatinage (ASR)\n- Contrôle de pression des pneus\n- Détection panneaux signalisation\n- Feux automatiques\n- Fixations ISOFIX\n- Roue de secours galette\n\nAutres équipements et informations :\n- Gonflage lombaires",
+    "points_forts": [],
+    "featured": false,
+    "images": []
+  },
+  {
     "id": "mercedes-benz-classe-b-180-amg-line-2019-1y79",
     "status": "disponible",
     "type": "voiture",
