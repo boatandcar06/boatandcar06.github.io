@@ -83,3 +83,5 @@ Ce site est **statique** (aucun serveur, aucune base de données) : cela limite 
 - Le contrôle d'accès à l'espace admin reste une protection "de courtoisie" côté navigateur, pas une vraie authentification serveur : une personne suffisamment déterminée et technique peut toujours contourner l'écran de connexion. Ne considérez pas cet espace admin comme un rempart contre un attaquant motivé — pour une vraie authentification, il faudrait un service tiers (ex. Cloudflare Access, Netlify Identity) ou un petit serveur dédié.
 - Le token GitHub que vous enregistrez dans les réglages de publication est stocké dans le navigateur (jamais envoyé ailleurs qu'à GitHub). Créez-le comme **"fine-grained personal access token"** limité à ce seul dépôt, avec uniquement la permission **Contents: Read and write**, et une date d'expiration (90 jours par exemple). Régénérez-le si vous changez d'ordinateur partagé ou en cas de doute.
 - Pour changer le mot de passe admin : demandez à votre assistant de le régénérer, ou calculez vous-même le SHA-256 de `identifiant:motdepasse` et remplacez `ADMIN_HASH` dans `admin.js`.
+
+<!-- Mise à jour : SIRET + chiffres accueil (24/09/2026) -->
